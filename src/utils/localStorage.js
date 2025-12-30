@@ -2,7 +2,11 @@ export const load = (key, fallback = null) => {
   try {
     const raw = localStorage.getItem(key)
     if (!raw) return fallback
-    return JSON.parse(raw)
+    const parsed = JSON.parse(raw)
+    // If stored value is the literal null (JSON "null"), JSON.parse returns null.
+    // Treat that as missing data and return the fallback so callers get proper defaults.
+    if (parsed === null) return fallback
+    return parsed
   } catch (e) {
     console.error('localStorage load error', e)
     return fallback
@@ -24,3 +28,4 @@ export const remove = (key) => {
     console.error('localStorage remove error', e)
   }
 }
+
