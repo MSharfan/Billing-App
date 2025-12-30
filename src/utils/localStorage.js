@@ -28,4 +28,3 @@ export const remove = (key) => {
     console.error('localStorage remove error', e)
   }
 }
-
