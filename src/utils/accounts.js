@@ -43,12 +43,12 @@ export function addExpense({ amount, category, note }) {
   save(KEY, data);
 }
 
-export function getAccounts() {
+// Return the normalized accounts data. Renamed to avoid duplicate-declaration
+// issues that can occur during certain bundling environments.
+export function getAccountsData() {
   return getBase();
 }
 
-
-export function getAccounts() {
-  return getBase();
-}
-
+// Backwards-compatible named export for consumers expecting `getAccounts`.
+// Exporting via alias avoids redeclaring the same identifier in some bundlers.
+export const getAccounts = getAccountsData;
