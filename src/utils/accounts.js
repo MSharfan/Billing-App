@@ -3,8 +3,16 @@ import { v4 as uuidv4 } from "uuid";
 
 const KEY = "accounts";
 
-const getBase = () =>
-  load(KEY, { income: [], expense: [] });
+const getBase = () => {
+  const data = load(KEY, { income: [], expense: [] });
+
+  // Defensive normalization: ensure we always return an object with
+  // `income` and `expense` as arrays so callers can safely push items.
+  if (!data || typeof data !== "object") return { income: [], expense: [] };
+  if (!Array.isArray(data.income)) data.income = [];
+  if (!Array.isArray(data.expense)) data.expense = [];
+  return data;
+};
 
 export function addIncomeFromBill({ billNo, amount, note }) {
   const data = getBase();
@@ -38,3 +46,9 @@ export function addExpense({ amount, category, note }) {
 export function getAccounts() {
   return getBase();
 }
+
+
+export function getAccounts() {
+  return getBase();
+}
+
